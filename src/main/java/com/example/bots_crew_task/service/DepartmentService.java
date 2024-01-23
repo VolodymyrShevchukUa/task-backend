@@ -34,8 +34,9 @@ public class DepartmentService {
         }
     }
 
-    public List<Department> getAllDepartments() {
-        return departmentRepository.findAllDepartmentsWithLectors();
+    public List<DepartmentDto> getAllDepartments() {
+        return departmentRepository.findAllDepartmentsWithLectors().stream().map(DepartmentDto::new)
+                .collect(Collectors.toList());
     }
 
     public DepartmentDto getDepartmentDto(long id){
