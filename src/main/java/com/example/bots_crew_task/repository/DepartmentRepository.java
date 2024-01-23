@@ -11,7 +11,7 @@ import java.util.List;
 public interface DepartmentRepository extends JpaRepository<Department,Long> {
 
     @Query(nativeQuery = true, value =
-            "SELECT  l.grade Grade, count(*) Count FROM lector l " +
+                    "SELECT  l.grade Grade, count(*) Count FROM lector l " +
                     "WHERE l.department_id = :id " +
                     "GROUP BY l.grade")
     List<DepartmentStatistic> getStatistic(long id);

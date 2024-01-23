@@ -23,16 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/lectors")
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@RequestMapping("/lectors")
 @CrossOrigin(origins = "http://localhost:3000")
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class LectorController {
 
     LectorService lectorService;
 
     @GetMapping("/search")
-    public List<Lector> getLector(@RequestParam String search) {
+    public List<LectorDto> getLector(@RequestParam String search) {
         return lectorService.findLectorBySearch(search);
     }
 

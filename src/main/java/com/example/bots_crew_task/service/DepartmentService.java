@@ -1,6 +1,7 @@
 package com.example.bots_crew_task.service;
 
 import com.example.bots_crew_task.model.Department;
+import com.example.bots_crew_task.model.DepartmentDto;
 import com.example.bots_crew_task.model.DepartmentStatistic;
 import com.example.bots_crew_task.repository.DepartmentRepository;
 import lombok.AccessLevel;
@@ -22,17 +23,23 @@ public class DepartmentService {
     DepartmentRepository departmentRepository;
 
 
-    public void createNewDepartment(Department department) {
+    public void createNewDepartment(DepartmentDto departmentDto) {
         try {
+            Department department = new Department();
+            department.setName(departmentDto.getName());
             departmentRepository.save(department);
         } catch (DataIntegrityViolationException e) {
             throw new ResponseStatusException(HttpStatusCode
-                    .valueOf(405), "department" + department.getName() + "already exist");
+                    .valueOf(405), "department" + departmentDto.getName() + "already exist");
         }
     }
 
     public List<Department> getAllDepartments() {
         return departmentRepository.findAllDepartmentsWithLectors();
+    }
+
+    public DepartmentDto getDepartmentDto(long id){
+        return new DepartmentDto(getDepartmentById(id));
     }
 
     public Department getDepartmentById(long id) {
@@ -43,7 +50,7 @@ public class DepartmentService {
         return departmentRepository.getStatistic(id);
     }
 
-    public List<Department> getDepartmentWithLectorsBySearch(String search) {
+    public List<DepartmentDto> getDepartmentWithLectorsBySearch(String search) {
         List<Department> departmentBySearch = departmentRepository.getDepartmentBySearch(search);
         return departmentBySearch
                 .stream()
@@ -54,6 +61,7 @@ public class DepartmentService {
                         .collect(Collectors.toList()))
                 )
                 .filter(department -> !department.getLectors().isEmpty())
+                .map(DepartmentDto::new)
                 .collect(Collectors.toList());
     }
 }

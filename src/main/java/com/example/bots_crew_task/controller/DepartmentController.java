@@ -1,6 +1,7 @@
 package com.example.bots_crew_task.controller;
 
 import com.example.bots_crew_task.model.Department;
+import com.example.bots_crew_task.model.DepartmentDto;
 import com.example.bots_crew_task.model.DepartmentStatistic;
 import com.example.bots_crew_task.service.DepartmentService;
 import lombok.AccessLevel;
@@ -18,14 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/departments")
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@RequestMapping("/departments")
 @CrossOrigin(origins = "http://localhost:3000")
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DepartmentController {
 
     DepartmentService departmentService;
-
 
     @GetMapping
     public List<Department> getDepartments() {
@@ -33,12 +33,12 @@ public class DepartmentController {
     }
 
     @GetMapping("/{departmentId}")
-    public Department getDepartment(@PathVariable long departmentId) {
-        return departmentService.getDepartmentById(departmentId);
+    public DepartmentDto getDepartment(@PathVariable long departmentId) {
+        return departmentService.getDepartmentDto(departmentId);
     }
 
     @PostMapping
-    public String createDepartment(@RequestBody Department department) {
+    public String createDepartment(@RequestBody DepartmentDto department) {
         departmentService.createNewDepartment(department);
         return "ok";
     }
@@ -49,7 +49,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/search")
-    public List<Department> getDepartmentWithCertainLectors(@RequestParam String search) {
+    public List<DepartmentDto> getDepartmentWithCertainLectors(@RequestParam String search) {
         return departmentService.getDepartmentWithLectorsBySearch(search);
     }
 

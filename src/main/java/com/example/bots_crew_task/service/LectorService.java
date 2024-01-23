@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -22,8 +23,8 @@ public class LectorService {
     LectorRepository lectorRepository;
     DepartmentService departmentService;
 
-    public List<Lector> findLectorBySearch(String search) {
-        return lectorRepository.findAllByNameIgnoreCaseContaining(search);
+    public List<LectorDto> findLectorBySearch(String search) {
+        return lectorRepository.findAllByNameIgnoreCaseContaining(search).stream().map(LectorDto::new).collect(Collectors.toList());
     }
 
     public void createLector(LectorDto lectorDto) {

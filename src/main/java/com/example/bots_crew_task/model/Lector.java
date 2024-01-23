@@ -28,5 +28,4 @@ public class Lector {
     @JoinColumn(name = "department_id")
     @JsonIgnore
     private Department department;
-
 }
